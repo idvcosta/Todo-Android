@@ -1,10 +1,11 @@
 package com.ingrid.todolist.model;
 
 import com.ingrid.todolist.activities.TodoListActivity;
+import com.ingrid.todolist.activities.adapters.LongPressListener;
 
 import java.util.List;
 
-public class TodoListModel {
+public class TodoListModel implements LongPressListener {
     private TodoListActivity todoListActivity;
     private TodoDatabase db;
 
@@ -17,5 +18,10 @@ public class TodoListModel {
         List<TodoItem> items = db.allTodos();
 
         this.todoListActivity.showList(items);
+    }
+
+    @Override
+    public void onLongPress() {
+        this.todoListActivity.showSelectMode();
     }
 }

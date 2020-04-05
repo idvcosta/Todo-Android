@@ -20,9 +20,11 @@ import com.ingrid.todolist.model.TodoListModel;
 import java.util.List;
 
 public class TodoListActivity extends AppCompatActivity {
-    
-    private TodoListModel model;
+
     private RecyclerView rvTodos;
+    private TodosAdapter adapter;
+
+    private TodoListModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,30 +50,19 @@ public class TodoListActivity extends AppCompatActivity {
         });
         this.rvTodos = findViewById(R.id.rvToDos);
         this.rvTodos.setLayoutManager(new LinearLayoutManager(this));
-//        this.rvTodos.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener(){
-//
-//            @Override
-//            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent event) {
-//
-//                GestureDetector gestureDetector = new GestureDetector(TodoListActivity.this, new GestureDetector.SimpleOnGestureListener() {
-//                    @Override
-//                    public boolean onSingleTapUp(MotionEvent e) {
-//                        return true;
-//                    }
-//
-//                    @Override
-//                    public void onLongPress(MotionEvent e) {
-//                        Toast.makeText(TodoListActivity.this, "longPress",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//                gestureDetector.onTouchEvent(event);
-//
-//                return false;
-//            }
-//        });
 
         model = new TodoListModel(this);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        this.adapter.setMode(ListMode.LIST);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+
+        return super.onSupportNavigateUp();
+
     }
 
     private void addTodo() {
@@ -79,6 +70,14 @@ public class TodoListActivity extends AppCompatActivity {
     }
 
     public void showList(List<TodoItem> items) {
-        rvTodos.setAdapter(new TodosAdapter(this,items));
+        this.adapter = new TodosAdapter(this, items, model);
+        rvTodos.setAdapter(adapter);
+    }
+
+    public void showSelectMode() {
+        this.adapter.setMode(ListMode.SELECT);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 }
