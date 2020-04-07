@@ -1,14 +1,14 @@
 package com.ingrid.todolist.model;
 
-import com.ingrid.todolist.activities.AddTodoActivity;
+import com.ingrid.todolist.activities.ManageTodoActivity;
 
 public class AddTodoModel {
-    private AddTodoActivity activity;
+    private ManageTodoActivity activity;
     private TodoItem item;
     private TodoDatabase db;
 
-    public AddTodoModel(AddTodoActivity addTodoActivity, TodoItem item) {
-        activity = addTodoActivity;
+    public AddTodoModel(ManageTodoActivity manageTodoActivity, TodoItem item) {
+        activity = manageTodoActivity;
         this.item = item;
         db = new TodoDatabase(activity);
 

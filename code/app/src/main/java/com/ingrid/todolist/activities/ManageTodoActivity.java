@@ -15,7 +15,7 @@ import com.ingrid.todolist.R;
 import com.ingrid.todolist.model.AddTodoModel;
 import com.ingrid.todolist.model.TodoItem;
 
-public class AddTodoActivity extends AppCompatActivity {
+public class ManageTodoActivity extends AppCompatActivity {
 
     private static final String EXTRA_ITEM = "item";
 
@@ -27,7 +27,14 @@ public class AddTodoActivity extends AppCompatActivity {
     private AddTodoModel model;
 
     public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, AddTodoActivity.class));
+        context.startActivity(new Intent(context, ManageTodoActivity.class));
+    }
+
+    //TODO ajustar nome do metodo
+    public static void openTodo(Context context, TodoItem item) {
+        Intent intent = new Intent(context, ManageTodoActivity.class);
+        intent.putExtra(EXTRA_ITEM, item);
+        context.startActivity(intent);
     }
 
     @Override
@@ -36,12 +43,6 @@ public class AddTodoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_todo);
 
         init();
-    }
-
-    public static void openTodo(Context context, TodoItem item) {
-        Intent intent = new Intent(context, AddTodoActivity.class);
-        intent.putExtra(EXTRA_ITEM, item);
-        context.startActivity(intent);
     }
 
     private void init() {

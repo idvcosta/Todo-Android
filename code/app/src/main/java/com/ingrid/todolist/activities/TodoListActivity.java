@@ -1,16 +1,15 @@
 package com.ingrid.todolist.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ingrid.todolist.R;
 import com.ingrid.todolist.activities.adapters.TodosAdapter;
@@ -55,18 +54,45 @@ public class TodoListActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        this.adapter.setMode(ListMode.LIST);
+    public void onBackPressed() {
+        super.onBackPressed();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        model.onBackPressed();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        model.onBackPressed();
 
         return super.onSupportNavigateUp();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(this.model.isSelectionMode()){
+            getMenuInflater().inflate(R.menu.delete_menu, menu);
+        }
+
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuDelete:
+                deleteTodos();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void deleteTodos() {
+        List<Long> selectedIds = adapter.getSelectedIds();
+        model.delete(selectedIds);
     }
 
     private void addTodo() {
-        AddTodoActivity.startActivity(this);
+        ManageTodoActivity.startActivity(this);
     }
 
     public void showList(List<TodoItem> items) {
@@ -79,5 +105,12 @@ public class TodoListActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    public void showListMode() {
+        this.adapter.setMode(ListMode.LIST);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
     }
 }

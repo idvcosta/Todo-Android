@@ -1,29 +1,31 @@
 package com.ingrid.todolist.activities.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ingrid.todolist.R;
-import com.ingrid.todolist.activities.AddTodoActivity;
+import com.ingrid.todolist.activities.ManageTodoActivity;
 import com.ingrid.todolist.activities.ListMode;
 import com.ingrid.todolist.model.TodoItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> {
+
     private Context context;
-    private List<TodoItem> items;
     private LongPressListener longPressListener;
+
+    private List<TodoItem> items;
     private ListMode listMode;
+    private List<Long> selectedIds;
 
     public TodosAdapter(Context context, List<TodoItem> items, LongPressListener longPressListener) {
         this.context = context;
@@ -31,6 +33,7 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
         this.longPressListener = longPressListener;
 
         this.listMode = ListMode.LIST;
+        this.selectedIds = new ArrayList<Long>();
     }
 
     @NonNull
@@ -45,10 +48,18 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
                 TodoItem item = (TodoItem) view.getTag();
 
                 if(listMode == ListMode.LIST){
-                    AddTodoActivity.openTodo(context,item);
+                    ManageTodoActivity.openTodo(context,item);
                 }else{
-                    boolean currenteSelection = toDoHolder.chSelection.isChecked();
-                    toDoHolder.chSelection.setChecked(!currenteSelection);
+                    boolean currentSelection = toDoHolder.chSelection.isChecked();
+                    boolean nextSelection = !currentSelection;
+                    long todoId = item.getId();
+                    toDoHolder.chSelection.setChecked(nextSelection);
+
+                    if(nextSelection){
+                        selectedIds.add(todoId);
+                    }else {
+                        selectedIds.remove(todoId);
+                    }
                 }
             }
         });
@@ -82,6 +93,9 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
         notifyDataSetChanged();
     }
 
+    public List<Long> getSelectedIds() {
+        return selectedIds;
+    }
 
     class ToDoHolder extends RecyclerView.ViewHolder {
         private final View view;

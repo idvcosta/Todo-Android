@@ -5,11 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class TodoDatabase extends SQLiteOpenHelper {
     private static final String DB_NAME = "todos";
@@ -77,6 +81,19 @@ public class TodoDatabase extends SQLiteOpenHelper {
         values.put(DESCRIPTION_COLUNM, item.getDescription());
 
         db.update(TODOS_TABLE, values, "id = ?", new String[]{item.getId().toString()});
+        db.close();
+    }
+
+    public void delete(List<Long> ids) {
+        SQLiteDatabase db = getWritableDatabase();
+        String questionMarks = TextUtils.join(",", Collections.nCopies(ids.size(), "?"));
+        String whereClause = String.format("id IN (%s)", questionMarks);
+        String[] whereArgs = ids.stream()
+                .map(id -> id.toString())
+                .collect(Collectors.toList())
+                .toArray(new String[ids.size()]);
+
+        db.delete(TODOS_TABLE, whereClause, whereArgs);
         db.close();
     }
 }
