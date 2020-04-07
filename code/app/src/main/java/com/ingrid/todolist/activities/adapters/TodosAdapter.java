@@ -42,24 +42,21 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
         View view = LayoutInflater.from(context).inflate(R.layout.todo_item, parent, false);
         final ToDoHolder toDoHolder = new ToDoHolder(view);
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TodoItem item = (TodoItem) view.getTag();
+        view.setOnClickListener(view1 -> {
+            TodoItem item = (TodoItem) view1.getTag();
 
-                if(listMode == ListMode.LIST){
-                    ManageTodoActivity.openTodo(context,item);
-                }else{
-                    boolean currentSelection = toDoHolder.chSelection.isChecked();
-                    boolean nextSelection = !currentSelection;
-                    long todoId = item.getId();
-                    toDoHolder.chSelection.setChecked(nextSelection);
+            if (listMode == ListMode.LIST) {
+                ManageTodoActivity.openTodo(context, item);
+            } else {
+                boolean currentSelection = toDoHolder.chSelection.isChecked();
+                boolean nextSelection = !currentSelection;
+                long todoId = item.getId();
+                toDoHolder.chSelection.setChecked(nextSelection);
 
-                    if(nextSelection){
-                        selectedIds.add(todoId);
-                    }else {
-                        selectedIds.remove(todoId);
-                    }
+                if (nextSelection) {
+                    selectedIds.add(todoId);
+                } else {
+                    selectedIds.remove(todoId);
                 }
             }
         });
@@ -72,13 +69,16 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
         //pegar o título a partir da posição
         TodoItem item = this.items.get(position);
         String title = item.getTitle();
+        Long id = item.getId();
 
-        //colocar o título no layout
         holder.tvTitle.setText(title);
-        if (listMode == ListMode.LIST){
-            holder.chSelection.setVisibility(View.GONE);
-        }else{
+        if (listMode == ListMode.LIST) {
+            holder.chSelection.setVisibility(View.INVISIBLE);
+        } else {
+            boolean isTodoSelected = selectedIds.contains(id);
+
             holder.chSelection.setVisibility(View.VISIBLE);
+            holder.chSelection.setChecked(isTodoSelected);
         }
         holder.view.setTag(item);
     }

@@ -55,8 +55,6 @@ public class TodoListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         model.onBackPressed();
     }
 
@@ -64,7 +62,7 @@ public class TodoListActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         model.onBackPressed();
 
-        return super.onSupportNavigateUp();
+        return true;
     }
 
     @Override
