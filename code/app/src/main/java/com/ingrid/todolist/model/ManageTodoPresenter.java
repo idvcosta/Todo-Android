@@ -1,19 +1,19 @@
 package com.ingrid.todolist.model;
 
-import com.ingrid.todolist.activities.ManageTodoActivity;
+import com.ingrid.todolist.contracts.ManageTodoContract;
 
-public class AddTodoModel {
-    private ManageTodoActivity activity;
+public class ManageTodoPresenter implements ManageTodoContract.Presenter {
+    private ManageTodoContract.View view;
     private TodoItem item;
     private TodoDatabase db;
 
-    public AddTodoModel(ManageTodoActivity manageTodoActivity, TodoItem item) {
-        activity = manageTodoActivity;
+    public ManageTodoPresenter(ManageTodoContract.View view, TodoDatabase db, TodoItem item) {
+        this.view = view;
         this.item = item;
-        db = new TodoDatabase(activity);
+        this.db = db;
 
         if (item != null) {
-            activity.showEditMode(this.item);
+            view.showEditMode(this.item);
         }
     }
 
@@ -29,8 +29,8 @@ public class AddTodoModel {
         TodoItem todoItem = new TodoItem(null, title, description);
         db.saveTodo(todoItem);
 
-        activity.showAddSuccess();
-        activity.finish();
+        view.showAddSuccess();
+        view.close();
     }
 
     private void editTodo(TodoItem item, String title, String description) {
@@ -39,7 +39,7 @@ public class AddTodoModel {
 
         db.editItem(item);
 
-        activity.showEditSuccess();
-        activity.finish();
+        view.showEditSuccess();
+        view.close();
     }
 }

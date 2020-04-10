@@ -12,10 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ingrid.todolist.R;
-import com.ingrid.todolist.model.AddTodoModel;
+import com.ingrid.todolist.contracts.ManageTodoContract;
+import com.ingrid.todolist.model.ManageTodoPresenter;
+import com.ingrid.todolist.model.TodoDatabase;
 import com.ingrid.todolist.model.TodoItem;
 
-public class ManageTodoActivity extends AppCompatActivity {
+public class ManageTodoActivity extends AppCompatActivity implements ManageTodoContract.View {
 
     private static final String EXTRA_ITEM = "item";
 
@@ -24,7 +26,7 @@ public class ManageTodoActivity extends AppCompatActivity {
     private EditText etDescription;
     private Button btAdd;
 
-    private AddTodoModel model;
+    private ManageTodoContract.Presenter presenter;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, ManageTodoActivity.class));
@@ -53,17 +55,14 @@ public class ManageTodoActivity extends AppCompatActivity {
         this.etDescription = this.findViewById(R.id.etDescription);
 
         this.btAdd = this.findViewById(R.id.btAdd);
-        btAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String title = etTitle.getText().toString();
-                String description = etDescription.getText().toString();
+        btAdd.setOnClickListener(view -> {
+            String title = etTitle.getText().toString();
+            String description = etDescription.getText().toString();
 
-                model.saveTodo(title, description);
-            }
+            presenter.saveTodo(title, description);
         });
 
-        model = new AddTodoModel(this, item);
+        presenter = new ManageTodoPresenter(this, new TodoDatabase(this), item);
     }
 
     public void showAddSuccess() {
@@ -79,5 +78,10 @@ public class ManageTodoActivity extends AppCompatActivity {
 
     public void showEditSuccess() {
         Toast.makeText(this, R.string.add_todo_editSuccess, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void close() {
+        finish();
     }
 }
