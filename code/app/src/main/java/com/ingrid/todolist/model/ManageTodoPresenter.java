@@ -1,8 +1,11 @@
 package com.ingrid.todolist.model;
 
 import com.ingrid.todolist.contracts.ManageTodoContract;
+import com.ingrid.todolist.util.Util;
 
 public class ManageTodoPresenter implements ManageTodoContract.Presenter {
+    private static final int MAX_TITLE_SIZE = 15;
+    private static final int MIN_TITLE_SIZE = 3;
     private ManageTodoContract.View view;
     private TodoItem item;
     private TodoDatabase db;
@@ -18,12 +21,29 @@ public class ManageTodoPresenter implements ManageTodoContract.Presenter {
     }
 
     public void saveTodo(String title, String description) {
-        if (item == null) {
-            addTodo(title, description);
+        ErrorType errorType = null;
+
+        if (!Util.isValid(title)) {
+            errorType = ErrorType.EMPTY_TITLE;
+        } else if (!Util.isValid(description)) {
+            errorType = ErrorType.EMPTY_DESCRIPTION;
+        } else if (title.length() > MAX_TITLE_SIZE) {
+            errorType = ErrorType.LARGE_TITLE;
+        } else if (title.length() < MIN_TITLE_SIZE) {
+            errorType = ErrorType.SMALL_TITLE;
+        }
+
+        if (errorType == null) {
+            if (item == null) {
+                addTodo(title, description);
+            } else {
+                editTodo(item, title, description);
+            }
         } else {
-            editTodo(item, title, description);
+            view.showErrorMessage(errorType);
         }
     }
+
 
     private void addTodo(String title, String description) {
         TodoItem todoItem = new TodoItem(null, title, description);

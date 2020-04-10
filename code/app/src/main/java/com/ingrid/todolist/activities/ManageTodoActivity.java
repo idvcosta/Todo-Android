@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,6 +12,7 @@ import android.widget.Toast;
 
 import com.ingrid.todolist.R;
 import com.ingrid.todolist.contracts.ManageTodoContract;
+import com.ingrid.todolist.model.ErrorType;
 import com.ingrid.todolist.model.ManageTodoPresenter;
 import com.ingrid.todolist.model.TodoDatabase;
 import com.ingrid.todolist.model.TodoItem;
@@ -82,5 +82,12 @@ public class ManageTodoActivity extends AppCompatActivity implements ManageTodoC
     @Override
     public void close() {
         finish();
+    }
+
+    @Override
+    public void showErrorMessage(ErrorType errorType) {
+        int stringId = errorType.getResId();
+
+        Toast.makeText(this, stringId, Toast.LENGTH_SHORT).show();
     }
 }
