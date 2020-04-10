@@ -5,7 +5,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -90,7 +89,7 @@ public class TodoListActivity extends AppCompatActivity {
     }
 
     private void addTodo() {
-        ManageTodoActivity.startActivity(this);
+        ManageTodoActivity.startActivityToCreate(this);
     }
 
     public void showList(List<TodoItem> items) {

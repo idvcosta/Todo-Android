@@ -28,12 +28,11 @@ public class ManageTodoActivity extends AppCompatActivity implements ManageTodoC
 
     private ManageTodoContract.Presenter presenter;
 
-    public static void startActivity(Context context) {
+    public static void startActivityToCreate(Context context) {
         context.startActivity(new Intent(context, ManageTodoActivity.class));
     }
 
-    //TODO ajustar nome do metodo
-    public static void openTodo(Context context, TodoItem item) {
+    public static void startActivityToEdit(Context context, TodoItem item) {
         Intent intent = new Intent(context, ManageTodoActivity.class);
         intent.putExtra(EXTRA_ITEM, item);
         context.startActivity(intent);
