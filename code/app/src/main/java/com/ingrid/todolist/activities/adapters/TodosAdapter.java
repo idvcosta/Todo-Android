@@ -82,13 +82,14 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
         }
         holder.view.setTag(item);
     }
-
+/
     @Override
     public int getItemCount() {
         return items.size();
     }
 
     public void setMode(ListMode listMode) {
+        this.selectedIds.clear();
         this.listMode = listMode;
         notifyDataSetChanged();
     }
