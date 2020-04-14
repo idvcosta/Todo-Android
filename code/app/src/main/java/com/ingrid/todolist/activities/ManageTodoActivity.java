@@ -16,6 +16,7 @@ import com.ingrid.todolist.model.ErrorType;
 import com.ingrid.todolist.model.ManageTodoPresenter;
 import com.ingrid.todolist.model.TodoDatabase;
 import com.ingrid.todolist.model.TodoItem;
+import com.ingrid.todolist.util.Util;
 
 public class ManageTodoActivity extends AppCompatActivity implements ManageTodoContract.View {
 
@@ -52,8 +53,9 @@ public class ManageTodoActivity extends AppCompatActivity implements ManageTodoC
         this.tvTitle = this.findViewById(R.id.tvTitle);
         this.etTitle = this.findViewById(R.id.etTitle);
         this.etDescription = this.findViewById(R.id.etDescription);
-
         this.btAdd = this.findViewById(R.id.btAdd);
+
+        Util.showKeyboard(this, etTitle);
         btAdd.setOnClickListener(view -> {
             String title = etTitle.getText().toString();
             String description = etDescription.getText().toString();
