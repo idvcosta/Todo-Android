@@ -12,17 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ingrid.todolist.R;
 import com.ingrid.todolist.activities.adapters.TodosAdapter;
+import com.ingrid.todolist.contracts.ListTodoContract;
+import com.ingrid.todolist.model.TodoDatabase;
 import com.ingrid.todolist.model.TodoItem;
-import com.ingrid.todolist.model.TodoListModel;
+import com.ingrid.todolist.model.TodoListPresenter;
 
 import java.util.List;
 
-public class TodoListActivity extends AppCompatActivity {
+public class TodoListActivity extends AppCompatActivity implements ListTodoContract.View {
 
     private RecyclerView rvTodos;
     private TodosAdapter adapter;
 
-    private TodoListModel model;
+    private ListTodoContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class TodoListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        model.load();
+        presenter.load();
     }
 
     private void init() {
@@ -49,29 +51,30 @@ public class TodoListActivity extends AppCompatActivity {
         this.rvTodos = findViewById(R.id.rvToDos);
         this.rvTodos.setLayoutManager(new LinearLayoutManager(this));
 
-        model = new TodoListModel(this);
+        presenter = new TodoListPresenter(this, new TodoDatabase(this));
     }
 
     @Override
     public void onBackPressed() {
-        model.onBackPressed();
+        presenter.onBackPressed();
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        model.onBackPressed();
+        presenter.onBackPressed();
 
         return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(this.model.isSelectionMode()){
+        if (this.presenter.isSelectionMode()) {
             getMenuInflater().inflate(R.menu.delete_menu, menu);
         }
 
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -85,7 +88,7 @@ public class TodoListActivity extends AppCompatActivity {
 
     private void deleteTodos() {
         List<Long> selectedIds = adapter.getSelectedIds();
-        model.delete(selectedIds);
+        presenter.delete(selectedIds);
     }
 
     private void addTodo() {
@@ -93,7 +96,7 @@ public class TodoListActivity extends AppCompatActivity {
     }
 
     public void showList(List<TodoItem> items) {
-        this.adapter = new TodosAdapter(this, items, model);
+        this.adapter = new TodosAdapter(this, items, presenter);
         rvTodos.setAdapter(adapter);
     }
 

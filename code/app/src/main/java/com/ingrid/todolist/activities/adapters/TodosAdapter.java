@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ingrid.todolist.R;
 import com.ingrid.todolist.activities.ManageTodoActivity;
 import com.ingrid.todolist.activities.ListMode;
+import com.ingrid.todolist.contracts.ListTodoContract;
 import com.ingrid.todolist.model.TodoItem;
 
 import java.util.ArrayList;
@@ -21,16 +22,16 @@ import java.util.List;
 public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> {
 
     private Context context;
-    private LongPressListener longPressListener;
+    private ListTodoContract.Presenter presenter;
 
     private List<TodoItem> items;
     private ListMode listMode;
     private List<Long> selectedIds;
 
-    public TodosAdapter(Context context, List<TodoItem> items, LongPressListener longPressListener) {
+    public TodosAdapter(Context context, List<TodoItem> items, ListTodoContract.Presenter presenter) {
         this.context = context;
         this.items = items;
-        this.longPressListener = longPressListener;
+        this.presenter = presenter;
 
         this.listMode = ListMode.LIST;
         this.selectedIds = new ArrayList<Long>();
@@ -82,7 +83,7 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
         }
         holder.view.setTag(item);
     }
-/
+
     @Override
     public int getItemCount() {
         return items.size();
@@ -113,7 +114,7 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    TodosAdapter.this.longPressListener.onLongPress();
+                    TodosAdapter.this.presenter.onLongPress();
 
                     return true;
                 }
