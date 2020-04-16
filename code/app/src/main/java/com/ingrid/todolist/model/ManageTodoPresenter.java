@@ -46,7 +46,7 @@ public class ManageTodoPresenter implements ManageTodoContract.Presenter {
 
 
     private void addTodo(String title, String description) {
-        TodoItem todoItem = new TodoItem(null, title, description);
+        TodoItem todoItem = new TodoItem(title, description);
         db.saveTodo(todoItem);
 
         view.showAddSuccess();

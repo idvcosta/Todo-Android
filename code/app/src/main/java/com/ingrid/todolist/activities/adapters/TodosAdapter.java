@@ -1,6 +1,7 @@
 package com.ingrid.todolist.activities.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> {
 
+    private static final int REGULAR_TEXT_FLAG = 0;
     private Context context;
     private ListTodoContract.Presenter presenter;
 
@@ -70,9 +72,16 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
         //pegar o título a partir da posição
         TodoItem item = this.items.get(position);
         String title = item.getTitle();
+        boolean marked = item.isMarked();
         Long id = item.getId();
 
         holder.tvTitle.setText(title);
+        if (marked){
+            holder.tvTitle.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        }else {
+            holder.tvTitle.setPaintFlags(REGULAR_TEXT_FLAG);
+        }
+
         if (listMode == ListMode.LIST) {
             holder.chSelection.setVisibility(View.INVISIBLE);
         } else {

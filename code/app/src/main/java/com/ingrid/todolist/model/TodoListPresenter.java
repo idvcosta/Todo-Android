@@ -51,4 +51,18 @@ public class TodoListPresenter implements ListTodoContract.Presenter {
         setListMode();
         load();
     }
+
+    @Override
+    public void mark(List<Long> selectedIds) {
+        db.mark(selectedIds);
+        setListMode();
+        load();
+    }
+
+    @Override
+    public void unmark(List<Long> selectedIds) {
+        db.unmark(selectedIds);
+        setListMode();
+        load();
+    }
 }

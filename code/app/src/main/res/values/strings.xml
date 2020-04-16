@@ -12,9 +12,11 @@
 
     <string name="add_todo_success">Item adicionado com sucesso!</string>
     <string name="add_todo_editSuccess">Edição realizada com sucesso!</string>
-    <string name="delete">delete</string>
+    <string name="delete">Apagar</string>
     <string name="error_empty_description">Preencha a descrição</string>
     <string name="error_empty_title">Preencha o título</string>
     <string name="error_large_title">O título só permite até 15 caracteres.</string>
     <string name="error_small_title">O título deve ter no mínimo 3 caracteres.</string>
+    <string name="mark">marcar</string>
+    <string name="unmark">desmarcar</string>
 </resources>

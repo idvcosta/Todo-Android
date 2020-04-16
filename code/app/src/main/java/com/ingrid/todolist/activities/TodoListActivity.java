@@ -69,7 +69,7 @@ public class TodoListActivity extends AppCompatActivity implements ListTodoContr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (this.presenter.isSelectionMode()) {
-            getMenuInflater().inflate(R.menu.delete_menu, menu);
+            getMenuInflater().inflate(R.menu.list_menu, menu);
         }
 
         return true;
@@ -81,6 +81,12 @@ public class TodoListActivity extends AppCompatActivity implements ListTodoContr
             case R.id.menuDelete:
                 deleteTodos();
                 return true;
+            case R.id.menuMark:
+                markTodos();
+                return true;
+            case R.id.menuUnmark:
+                unmarkTodos();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -89,6 +95,16 @@ public class TodoListActivity extends AppCompatActivity implements ListTodoContr
     private void deleteTodos() {
         List<Long> selectedIds = adapter.getSelectedIds();
         presenter.delete(selectedIds);
+    }
+
+    private void markTodos() {
+        List<Long> selectedIds = adapter.getSelectedIds();
+        presenter.mark(selectedIds);
+    }
+
+    private void unmarkTodos() {
+        List<Long> selectedIds = adapter.getSelectedIds();
+        presenter.unmark(selectedIds);
     }
 
     private void addTodo() {

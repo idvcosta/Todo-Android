@@ -26,5 +26,9 @@ public interface ListTodoContract {
         boolean isSelectionMode();
 
         void delete(List<Long> selectedIds);
+
+        void mark(List<Long> selectedIds);
+
+        void unmark(List<Long> selectedIds);
     }
 }
