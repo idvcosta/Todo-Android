@@ -1,6 +1,7 @@
 package com.ingrid.todolist.contracts;
 
 import com.ingrid.todolist.model.ErrorType;
+import com.ingrid.todolist.model.Priority;
 import com.ingrid.todolist.model.TodoItem;
 
 public interface ManageTodoContract {
@@ -16,6 +17,6 @@ public interface ManageTodoContract {
     }
     
     interface Presenter{
-        void saveTodo(String title, String description);
+        void saveTodo(String title, String description, Priority priority);
     }
 }

@@ -20,7 +20,7 @@ public class ManageTodoPresenter implements ManageTodoContract.Presenter {
         }
     }
 
-    public void saveTodo(String title, String description) {
+    public void saveTodo(String title, String description, Priority priority) {
         ErrorType errorType = null;
 
         if (!Util.isValid(title)) {
@@ -35,7 +35,7 @@ public class ManageTodoPresenter implements ManageTodoContract.Presenter {
 
         if (errorType == null) {
             if (item == null) {
-                addTodo(title, description);
+                addTodo(title, description, priority);
             } else {
                 editTodo(item, title, description);
             }
@@ -45,8 +45,8 @@ public class ManageTodoPresenter implements ManageTodoContract.Presenter {
     }
 
 
-    private void addTodo(String title, String description) {
-        TodoItem todoItem = new TodoItem(title, description);
+    private void addTodo(String title, String description, Priority priority) {
+        TodoItem todoItem = new TodoItem(title, description, priority);
         db.saveTodo(todoItem);
 
         view.showAddSuccess();

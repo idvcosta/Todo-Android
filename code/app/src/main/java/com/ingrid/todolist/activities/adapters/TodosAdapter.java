@@ -15,6 +15,7 @@ import com.ingrid.todolist.R;
 import com.ingrid.todolist.activities.ManageTodoActivity;
 import com.ingrid.todolist.activities.ListMode;
 import com.ingrid.todolist.contracts.ListTodoContract;
+import com.ingrid.todolist.model.Priority;
 import com.ingrid.todolist.model.TodoItem;
 
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
     private ListMode listMode;
     private List<Long> selectedIds;
 
+    private int lowColor;
+    private int mediumColor;
+    private int highColor;
+
     public TodosAdapter(Context context, List<TodoItem> items, ListTodoContract.Presenter presenter) {
         this.context = context;
         this.items = items;
@@ -37,6 +42,10 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
 
         this.listMode = ListMode.LIST;
         this.selectedIds = new ArrayList<Long>();
+
+        this.lowColor = context.getColor(R.color.lowPriority);
+        this.mediumColor = context.getColor(R.color.mediumPriority);
+        this.highColor = context.getColor(R.color.highPriority);
     }
 
     @NonNull
@@ -74,11 +83,29 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
         String title = item.getTitle();
         boolean marked = item.isMarked();
         Long id = item.getId();
+        Priority priority = item.getPriority();
+        int priorityColor;
+
+        switch (priority) {
+            case LOW:
+                priorityColor = lowColor;
+                break;
+            case MEDIUM:
+                priorityColor = mediumColor;
+                break;
+            case HIGH:
+                priorityColor = highColor;
+                break;
+            default:
+                throw new IllegalStateException("not implemented for: " + priority);
+        }
 
         holder.tvTitle.setText(title);
-        if (marked){
+        holder.tvTitle.setTextColor(priorityColor);
+
+        if (marked) {
             holder.tvTitle.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        }else {
+        } else {
             holder.tvTitle.setPaintFlags(REGULAR_TEXT_FLAG);
         }
 
