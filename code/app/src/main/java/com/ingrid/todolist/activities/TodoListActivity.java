@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ingrid.todolist.R;
 import com.ingrid.todolist.activities.adapters.TodosAdapter;
 import com.ingrid.todolist.contracts.ListTodoContract;
@@ -41,7 +42,7 @@ public class TodoListActivity extends AppCompatActivity implements ListTodoContr
     }
 
     private void init() {
-        Button btAdd = findViewById(R.id.button_add);
+        FloatingActionButton btAdd = findViewById(R.id.button_add);
         btAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
