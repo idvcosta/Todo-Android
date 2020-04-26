@@ -24,4 +24,10 @@
     <string name="rb_medium_priority">Média</string>
     <string name="rb_low_priority">Baixa</string>
     <string name="tvPriority">"Prioridade:"</string>
+    <string name="sort">Ordenar</string>
+    <string name="title_asc">Título (Ascendente)</string>
+    <string name="title_desc">Título (Descendente)</string>
+    <string name="sort_priority_high">Prioridade Alta</string>
+    <string name="sort_priority_medium">Prioridade Média</string>
+    <string name="sort_priority_low">Prioridade Baixa</string>
 </resources>

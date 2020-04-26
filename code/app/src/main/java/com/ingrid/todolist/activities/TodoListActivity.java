@@ -68,9 +68,13 @@ public class TodoListActivity extends AppCompatActivity implements ListTodoContr
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        int menuId;
         if (this.presenter.isSelectionMode()) {
-            getMenuInflater().inflate(R.menu.list_menu, menu);
+            menuId = R.menu.list_menu_edit_todo;
+        } else {
+            menuId = R.menu.list_menu_sort;
         }
+        getMenuInflater().inflate(menuId, menu);
 
         return true;
     }
@@ -78,6 +82,18 @@ public class TodoListActivity extends AppCompatActivity implements ListTodoContr
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menuTitleAsc:
+                sortTitleAsc();
+                return true;
+            case R.id.menuTitleDesc:
+                sortTitleDesc();
+                return true;
+            case R.id.menuPriorityHigh:
+                sortPriorityHigh();
+                return true;
+            case R.id.menuPriorityLow:
+                sortPriorityLow();
+                return true;
             case R.id.menuDelete:
                 deleteTodos();
                 return true;
@@ -90,6 +106,23 @@ public class TodoListActivity extends AppCompatActivity implements ListTodoContr
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void sortTitleAsc() {
+        presenter.sortTitleAsc();
+    }
+
+    private void sortTitleDesc() {
+        presenter.sortTitleDesc();
+    }
+
+    private void sortPriorityHigh() {
+        presenter.sortPriorityHigh();
+    }
+
+
+    private void sortPriorityLow() {
+        presenter.sortPriorityLow();
     }
 
     private void deleteTodos() {

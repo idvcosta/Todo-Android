@@ -19,13 +19,13 @@ public class TodoDatabase extends SQLiteOpenHelper {
     private static final int VERSION = 3;
     private static final String TODOS_TABLE = "TODOS";
     private static final String ID_COLUNM = "ID";
-    private static final String TITLE_COLUNM = "TITLE";
+    public static final String TITLE_COLUNM = "TITLE";
     private static final String DESCRIPTION_COLUNM = "DESCRIPTION";
     private static final String MARKED_COLUMN = "MARKED";
     /**
      * this column references  {@link Priority}
      */
-    private static final String PRIORITY_COLUMN = "PRIORITY";
+    public static final String PRIORITY_COLUMN = "PRIORITY";
     private static final String CREATE_TODOS = "CREATE TABLE " + TODOS_TABLE + " (" +
             ID_COLUNM + " INTEGER PRIMARY KEY, " +
             TITLE_COLUNM + " TEXT, " +
@@ -68,16 +68,17 @@ public class TodoDatabase extends SQLiteOpenHelper {
         values.put(TITLE_COLUNM, todoItem.getTitle());
         values.put(DESCRIPTION_COLUNM, todoItem.getDescription());
         values.put(MARKED_COLUMN, todoItem.isMarked() ? 1 : 0);
-        values.put(PRIORITY_COLUMN,todoItem.getPriority().ordinal());
+        values.put(PRIORITY_COLUMN, todoItem.getPriority().ordinal());
 
         db.insert(TODOS_TABLE, null, values);
         db.close();
     }
 
-    public List<TodoItem> allTodos() {
+    public List<TodoItem> allTodos(SortType sortType) {
+        String orderby = sortType.getSortCommand();
         ArrayList<TodoItem> result = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(TODOS_TABLE, null, null, null, null, null, null);
+        Cursor cursor = db.query(TODOS_TABLE, null, null, null, null, null, orderby);
 
         if (cursor.moveToFirst()) {
             int idIndex = cursor.getColumnIndex(ID_COLUNM);

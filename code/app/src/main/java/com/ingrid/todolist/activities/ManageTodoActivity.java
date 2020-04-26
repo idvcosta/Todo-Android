@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -94,6 +96,25 @@ public class ManageTodoActivity extends AppCompatActivity implements ManageTodoC
         this.etTitle.setText(item.getTitle());
         this.etDescription.setText((item.getDescription()));
         this.btAdd.setText(R.string.bt_edit);
+
+        Priority priority = item.getPriority();
+        int selectedPriorityViewId;
+
+        switch (priority) {
+            case LOW:
+                selectedPriorityViewId = R.id.rbLowPriority;
+                break;
+            case MEDIUM:
+                selectedPriorityViewId = R.id.rbMediumPriority;
+                break;
+            case HIGH:
+                selectedPriorityViewId = R.id.rbHighPriority;
+                break;
+            default:
+                throw new IllegalStateException("not implemented for: " + priority);
+        }
+
+        ((RadioButton)findViewById(selectedPriorityViewId)).setChecked(true);
     }
 
     public void showEditSuccess() {

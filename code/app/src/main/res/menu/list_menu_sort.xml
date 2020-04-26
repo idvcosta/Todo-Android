@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="@string/sort"
+        android:tooltipText="@string/sort"
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/menuTitleAsc"
+                android:title="@string/title_asc"
+                app:showAsAction="collapseActionView" />
+
+            <item
+                android:id="@+id/menuTitleDesc"
+                android:title="@string/title_desc"
+                app:showAsAction="collapseActionView" />
+
+            <item
+                android:id="@+id/menuPriorityHigh"
+                android:title="@string/sort_priority_high"
+                app:showAsAction="collapseActionView" />
+            <item
+                android:id="@+id/menuPriorityLow"
+                android:title="@string/sort_priority_low"
+                app:showAsAction="collapseActionView" />
+
+        </menu>
+    </item>
+
+
+</menu>

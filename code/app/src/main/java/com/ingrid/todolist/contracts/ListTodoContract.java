@@ -25,6 +25,14 @@ public interface ListTodoContract {
 
         boolean isSelectionMode();
 
+        void sortTitleAsc();
+
+        void sortTitleDesc();
+
+        void sortPriorityHigh();
+
+        void sortPriorityLow();
+
         void delete(List<Long> selectedIds);
 
         void mark(List<Long> selectedIds);
