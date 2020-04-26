@@ -14,6 +14,8 @@ public interface ListTodoContract {
         void invalidateOptionsMenu();
 
         void showListMode();
+
+        void finish();
     }
     
     interface Presenter{

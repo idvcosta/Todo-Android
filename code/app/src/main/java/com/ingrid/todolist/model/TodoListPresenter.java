@@ -39,7 +39,11 @@ public class TodoListPresenter implements ListTodoContract.Presenter {
 
     @Override
     public void onBackPressed() {
-        setListMode();
+        if (this.listMode == ListMode.LIST) {
+            view.finish();
+        } else {
+            setListMode();
+        }
     }
 
     private void setListMode() {
