@@ -5,14 +5,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ingrid.todolist.R;
 import com.ingrid.todolist.activities.adapters.TodosAdapter;
+import com.ingrid.todolist.activities.fragments.ManageTodoFragment;
 import com.ingrid.todolist.contracts.ListTodoContract;
 import com.ingrid.todolist.model.TodoDatabase;
 import com.ingrid.todolist.model.TodoItem;
@@ -26,6 +29,7 @@ public class TodoListActivity extends AppCompatActivity implements ListTodoContr
     private TodosAdapter adapter;
 
     private ListTodoContract.Presenter presenter;
+    private FrameLayout todoFragmentContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +55,10 @@ public class TodoListActivity extends AppCompatActivity implements ListTodoContr
         });
         this.rvTodos = findViewById(R.id.rvToDos);
         this.rvTodos.setLayoutManager(new LinearLayoutManager(this));
+        this.todoFragmentContainer = findViewById(R.id.todoFragmentContainer);
+        boolean isLandscape = this.todoFragmentContainer != null;
 
-        presenter = new TodoListPresenter(this, new TodoDatabase(this));
+        presenter = new TodoListPresenter(this, new TodoDatabase(this), isLandscape);
     }
 
     @Override
@@ -155,6 +161,18 @@ public class TodoListActivity extends AppCompatActivity implements ListTodoContr
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    @Override
+    public void openTodoLandscape(TodoItem item) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.todoFragmentContainer, ManageTodoFragment.newInstance(item));
+        ft.commit();
+    }
+
+    @Override
+    public void openTodoPortrait(TodoItem item) {
+        ManageTodoActivity.startActivityToEdit(this, item);
     }
 
     public void showListMode() {

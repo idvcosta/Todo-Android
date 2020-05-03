@@ -58,7 +58,7 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosAdapter.ToDoHolder> 
             TodoItem item = (TodoItem) view1.getTag();
 
             if (listMode == ListMode.LIST) {
-                ManageTodoActivity.startActivityToEdit(context, item);
+                presenter.openTodo(item);
             } else {
                 boolean currentSelection = toDoHolder.chSelection.isChecked();
                 boolean nextSelection = !currentSelection;

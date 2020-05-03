@@ -12,10 +12,12 @@ public class TodoListPresenter implements ListTodoContract.Presenter {
     private ListMode listMode;
     private ListTodoContract.View view;
     private TodoDatabase db;
+    private boolean isLandscape;
 
-    public TodoListPresenter(ListTodoContract.View view, TodoDatabase db) {
+    public TodoListPresenter(ListTodoContract.View view, TodoDatabase db, boolean isLandscape) {
         this.view = view;
         this.db = db;
+        this.isLandscape = isLandscape;
 
         listMode = ListMode.LIST;
     }
@@ -94,5 +96,14 @@ public class TodoListPresenter implements ListTodoContract.Presenter {
         db.unmark(selectedIds);
         setListMode();
         load();
+    }
+
+    @Override
+    public void openTodo(TodoItem item) {
+        if (isLandscape){
+            view.openTodoLandscape(item);
+        }else{
+            view.openTodoPortrait(item);
+        }
     }
 }
