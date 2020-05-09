@@ -16,28 +16,34 @@ public class ManageTodoPresenter implements ManageTodoContract.Presenter {
         this.db = db;
 
         if (item != null) {
-            view.showEditMode(this.item);
+            if(item.getId()!=null){
+                view.showEditMode(this.item);
+            }else{
+                view.showItem(this.item);
+            }
         }
     }
 
-    public void saveTodo(String title, String description, Priority priority) {
+    public void saveTodo(TodoItem todo) {
         ErrorType errorType = null;
 
-        if (!Util.isValid(title)) {
+        if (!Util.isValid(todo.getTitle())) {
             errorType = ErrorType.EMPTY_TITLE;
-        } else if (!Util.isValid(description)) {
+        } else if (!Util.isValid(todo.getDescription())) {
             errorType = ErrorType.EMPTY_DESCRIPTION;
-        } else if (title.length() > MAX_TITLE_SIZE) {
+        } else if (todo.getTitle().length() > MAX_TITLE_SIZE) {
             errorType = ErrorType.LARGE_TITLE;
-        } else if (title.length() < MIN_TITLE_SIZE) {
+        } else if (todo.getTitle().length() < MIN_TITLE_SIZE) {
             errorType = ErrorType.SMALL_TITLE;
         }
 
         if (errorType == null) {
-            if (item == null) {
-                addTodo(title, description, priority);
+            boolean isNewItem = item == null || item.getId() == null;
+
+            if (isNewItem) {
+                addTodo(todo.getTitle(), todo.getDescription(), todo.getPriority());
             } else {
-                editTodo(item, title, description);
+                editTodo(item, todo.getTitle(), todo.getDescription());
             }
         } else {
             view.showErrorMessage(errorType);

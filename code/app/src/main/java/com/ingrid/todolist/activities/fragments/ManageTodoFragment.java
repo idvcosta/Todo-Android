@@ -32,17 +32,19 @@ public class ManageTodoFragment extends Fragment implements ManageTodoContract.V
     private Button btAdd;
 
     private ManageTodoContract.Presenter presenter;
-    private TodoItem item;
+    private TodoItem currentItem;
 
+    //for create mode
     public ManageTodoFragment() {
 
     }
 
+    //for edit mode
     public ManageTodoFragment(TodoItem item) {
-        this.item = item;
+        this.currentItem = item;
     }
 
-    public static Fragment newInstance(TodoItem item) {
+    public static ManageTodoFragment newInstance(TodoItem item) {
         return new ManageTodoFragment(item);
     }
 
@@ -52,6 +54,36 @@ public class ManageTodoFragment extends Fragment implements ManageTodoContract.V
         return inflater.inflate(R.layout.fragment_manage_todo, container, false);
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        TodoItem todo = getTodo();
+        outState.putSerializable("todo", todo);
+    }
+
+    private TodoItem getTodo() {
+        String title = etTitle.getText().toString();
+        String description = etDescription.getText().toString();
+        int priorityId = rgPriority.getCheckedRadioButtonId();
+        Priority priority;
+
+        if (priorityId == R.id.rbHighPriority) {
+            priority = Priority.HIGH;
+        } else if (priorityId == R.id.rbMediumPriority) {
+            priority = Priority.MEDIUM;
+        } else {
+            priority = Priority.LOW;
+        }
+
+        TodoItem todoItem = new TodoItem(title, description, priority);
+
+        if (this.currentItem != null) {
+            todoItem.setId(currentItem.getId());
+        }
+
+        return todoItem;
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -68,24 +100,13 @@ public class ManageTodoFragment extends Fragment implements ManageTodoContract.V
             saveTodo();
         });
 
-        presenter = new ManageTodoPresenter(this, new TodoDatabase(requireContext()), this.item);
+        presenter = new ManageTodoPresenter(this, new TodoDatabase(requireContext()), this.currentItem);
     }
 
     private void saveTodo() {
-        String title = etTitle.getText().toString();
-        String description = etDescription.getText().toString();
-        int priorityId = rgPriority.getCheckedRadioButtonId();
-        Priority priority;
+        TodoItem todo = getTodo();
 
-        if (priorityId == R.id.rbHighPriority) {
-            priority = Priority.HIGH;
-        } else if (priorityId == R.id.rbMediumPriority) {
-            priority = Priority.MEDIUM;
-        } else {
-            priority = Priority.LOW;
-        }
-
-        presenter.saveTodo(title, description, priority);
+        presenter.saveTodo(todo);
     }
 
 
@@ -94,11 +115,9 @@ public class ManageTodoFragment extends Fragment implements ManageTodoContract.V
     }
 
     @Override
-    public void showEditMode(TodoItem item) {
-        this.tvTitle.setText(R.string.tvEditTitle);
+    public void showItem(TodoItem item) {
         this.etTitle.setText(item.getTitle());
         this.etDescription.setText((item.getDescription()));
-        this.btAdd.setText(R.string.bt_edit);
 
         Priority priority = item.getPriority();
         int selectedPriorityViewId;
@@ -118,6 +137,13 @@ public class ManageTodoFragment extends Fragment implements ManageTodoContract.V
         }
 
         ((RadioButton) getActivity().findViewById(selectedPriorityViewId)).setChecked(true);
+    }
+
+    @Override
+    public void showEditMode(TodoItem item) {
+        this.tvTitle.setText(R.string.tvEditTitle);
+        this.btAdd.setText(R.string.bt_edit);
+        this.showItem(item);
     }
 
     public void showEditSuccess() {

@@ -1,5 +1,6 @@
 package com.ingrid.todolist.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,7 +28,7 @@ import com.ingrid.todolist.util.Util;
 public class ManageTodoActivity extends AppCompatActivity {
 
     private static final String EXTRA_ITEM = "item";
-
+    private ManageTodoFragment manageTodoFragment;
 
     public static void startActivityToCreate(Context context) {
         context.startActivity(new Intent(context, ManageTodoActivity.class));
@@ -44,13 +45,23 @@ public class ManageTodoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_todo);
 
-        init();
+        init(savedInstanceState);
     }
 
-    private void init() {
-        TodoItem item = (TodoItem) getIntent().getSerializableExtra(EXTRA_ITEM);
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-        Fragment manageTodoFragment = ManageTodoFragment.newInstance(item);
+        manageTodoFragment.onSaveInstanceState(outState);
+    }
+
+    private void init(Bundle savedInstanceState) {
+        TodoItem item = (TodoItem) getIntent().getSerializableExtra(EXTRA_ITEM);
+        if (savedInstanceState != null) {
+            item = (TodoItem) savedInstanceState.getSerializable("todo");
+        }
+
+        this.manageTodoFragment = ManageTodoFragment.newInstance(item);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, manageTodoFragment);

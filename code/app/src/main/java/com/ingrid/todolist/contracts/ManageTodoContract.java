@@ -14,9 +14,12 @@ public interface ManageTodoContract {
         void close();
 
         void showErrorMessage(ErrorType errorType);
+
+        void showItem(TodoItem item);
     }
     
     interface Presenter{
-        void saveTodo(String title, String description, Priority priority);
+        void saveTodo(TodoItem todo);
+
     }
 }
