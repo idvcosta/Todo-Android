@@ -21,11 +21,11 @@ public class TodoDatabase extends SQLiteOpenHelper {
     private static final String ID_COLUNM = "ID";
     public static final String TITLE_COLUNM = "TITLE";
     private static final String DESCRIPTION_COLUNM = "DESCRIPTION";
-    private static final String MARKED_COLUMN = "MARKED";
     /**
      * this column references  {@link Priority}
      */
     public static final String PRIORITY_COLUMN = "PRIORITY";
+    private static final String MARKED_COLUMN = "MARKED";
     private static final String CREATE_TODOS = "CREATE TABLE " + TODOS_TABLE + " (" +
             ID_COLUNM + " INTEGER PRIMARY KEY, " +
             TITLE_COLUNM + " TEXT, " +
@@ -113,6 +113,7 @@ public class TodoDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TITLE_COLUNM, item.getTitle());
         values.put(DESCRIPTION_COLUNM, item.getDescription());
+        values.put(PRIORITY_COLUMN,item.getPriority().ordinal());
 
         db.update(TODOS_TABLE, values, "id = ?", new String[]{item.getId().toString()});
         db.close();

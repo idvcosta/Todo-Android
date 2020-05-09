@@ -52,4 +52,8 @@ public class TodoItem implements Serializable {
     public Priority getPriority() {
         return priority;
     }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
 }

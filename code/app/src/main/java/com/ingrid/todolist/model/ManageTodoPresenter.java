@@ -43,7 +43,7 @@ public class ManageTodoPresenter implements ManageTodoContract.Presenter {
             if (isNewItem) {
                 addTodo(todo.getTitle(), todo.getDescription(), todo.getPriority());
             } else {
-                editTodo(item, todo.getTitle(), todo.getDescription());
+                editTodo(item, todo.getTitle(), todo.getDescription(), todo.getPriority());
             }
         } else {
             view.showErrorMessage(errorType);
@@ -59,9 +59,10 @@ public class ManageTodoPresenter implements ManageTodoContract.Presenter {
         view.close();
     }
 
-    private void editTodo(TodoItem item, String title, String description) {
+    private void editTodo(TodoItem item, String title, String description, Priority priority) {
         item.setTitle(title);
         item.setDescription(description);
+        item.setPriority(priority);
 
         db.editItem(item);
 
